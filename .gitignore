@@ -1,3 +1,7 @@
+build/
+.vscode/
+.editorconfig
+
 # Prerequisites
 *.d
 
