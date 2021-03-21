@@ -1,18 +1,18 @@
 #include "io.hpp"
 
-pasc::IO::IO(const std::string &input_name, const io_mode mode)
+pasc::IO::IO(const std::string &input_file_name)
 {
-    this->mode = mode;
-    this->input_name = input_name;
+    fname = input_file_name;
+    ifs = std::make_unique<std::ifstream>(input_file_name, std::ios::in);
 }
 
-std::string pasc::IO::get_program_text(std::istream &is)
+std::string pasc::IO::get_program_text()
 {
-    is.seekg(0, is.end);
-    int length = is.tellg();
-    is.seekg(0, is.beg);
+    ifs->seekg(0, ifs->end);
+    int length = ifs->tellg();
+    ifs->seekg(0, ifs->beg);
     char *buffer = new char [length];
-    is.read(buffer, length);
+    ifs->read(buffer, length);
     std::string text(buffer);
     delete[] buffer;
     return text;

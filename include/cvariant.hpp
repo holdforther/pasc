@@ -1,65 +1,52 @@
 #pragma once
 #include <string>
 
-enum EVarType
-{
-    evtInt,
-    evtFloat,
-    evtChar,
-    evtString
+namespace pasc {
+enum EVarType { evtInt, evtFloat, evtChar, evtString };
+
+class CVariant {
+private:
+  EVarType T;
+
+public:
+  explicit CVariant(const EVarType &T) { this->T = T; }
 };
 
-class CVariant
-{
+class CIntVariant : public virtual CVariant {
 private:
-    EVarType T;
+  int val;
+
 public:
-    explicit CVariant(const EVarType& T)
-    {
-        this->T = T;
-    }
+  explicit CIntVariant(const EVarType &val) : CVariant(val) { this->val = val; }
 };
 
-class CIntVariant : public virtual CVariant
-{
+class CFloatVariant : public virtual CVariant {
 private:
-    int val;
+  float val;
+
 public:
-    explicit CIntVariant(const EVarType& val) : CVariant(val)
-    {
-        this->val = val;
-    }
+  explicit CFloatVariant(const EVarType &val) : CVariant(val) {
+    this->val = val;
+  }
 };
 
-class CFloatVariant : public virtual CVariant
-{
+class CCharVariant : public virtual CVariant {
 private:
-    float val;
+  char val;
+
 public:
-    explicit CFloatVariant(const EVarType& val) : CVariant(val)
-    {
-        this->val = val;
-    }
+  explicit CCharVariant(const EVarType &val) : CVariant(val) {
+    this->val = val;
+  }
 };
 
-class CCharVariant : public virtual CVariant
-{
+class CStringVariant : public virtual CVariant {
 private:
-    char val;
-public:
-    explicit CCharVariant(const EVarType& val) : CVariant(val)
-    {
-        this->val = val;
-    }
-};
+  std::string val;
 
-class CStringVariant : public virtual CVariant
-{
-private:
-    std::string val;
 public:
-    explicit CStringVariant(const EVarType& val) : CVariant(val)
-    {
-        this->val = val;
-    }
+  explicit CStringVariant(const EVarType &val) : CVariant(val) {
+    this->val = val;
+  }
 };
+} // namespace pasc

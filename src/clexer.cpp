@@ -1,53 +1,40 @@
 #include "clexer.hpp"
-#include "cerror.hpp"
+#include <memory>
 
-// pasc::CLexer::CLexer(std::string Expr)
-// {
-//     this->Expr = Expr;
-//     std::stringstream ss(Expr);
-//     std::string item;
-//     while(std::getline(ss, item, ' '))
-//     {
-//         parsed.push_back(item);
-//     }
-//     pos = 0;
-// }
-
-// The input stream has to be trimmed
-CToken pasc::CLexer::get_next_token(std::istream &is)
+std::unique_ptr<CToken> pasc::CLexer::get_next_token(std::ifstream &ifs)
 {
     char ch;
     ETokenType ett;
-    if (!is.get(ch))
+    if (!ifs.get(ch))
     {
-        return CToken(ettNull);
+        return nullptr;
     }
 
     std::stringstream ss;
     if(std::isdigit(ch))
     {
         ett = ettValue;
-        while (is.get(ch) && std::isdigit(ch))
+        while (ifs.get(ch) && std::isdigit(ch))
         {
             ss << ch;
         }
-        return CToken(ett); 
+        return std::make_unique<CToken>(ett); 
     }
     else switch (ch)
     {
     case '(':
-        return CToken(eoLeftBracet);
+        return std::make_unique<CToken>(eoLeftBracet);
     case ')':
-        return CToken(eoRightBracet);
+        return std::make_unique<CToken>(eoRightBracet);
     case '+':
-        return CToken(eoPlus);
+        return std::make_unique<CToken>(eoPlus);
     case '-':
-        return CToken(eoMinus);
+        return std::make_unique<CToken>(eoMinus);
     case '*':
-        return CToken(eoMul);
+        return std::make_unique<CToken>(eoMul);
     case '/':
-        return CToken(eoDiv);
+        return std::make_unique<CToken>(eoDiv);
     default:
-        return CToken(ettIdentifier);
+        return std::make_unique<CToken>(ettIdentifier);
     }
 }

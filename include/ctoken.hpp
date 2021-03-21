@@ -23,7 +23,7 @@ class CToken
 private:
     ETokenType type;
     EOperator oper;
-    CVariant* value;
+    pasc::CVariant* value;
     std::string identifier;
 public:
     CToken(const ETokenType &type);

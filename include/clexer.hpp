@@ -1,17 +1,19 @@
 #pragma once
-#include "ctoken.hpp"
+#include <fstream>
+#include <memory>
 #include <string>
 #include <sstream>
+
+#include "ctoken.hpp"
 
 namespace pasc
 {
     class CLexer
     {
-    private:
-        int pos;
     public:
         std::string Expr;
-        // CLexer(std::string Expr);
-        static CToken get_next_token(std::istream &is);
+        
+        static std::unique_ptr<CToken>
+        get_next_token(std::unique_ptr<std::ifstream> ifs);
     };
 }
