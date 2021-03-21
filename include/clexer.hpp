@@ -12,8 +12,6 @@ namespace pasc
     {
     public:
         std::string Expr;
-        
-        static std::unique_ptr<CToken>
-        get_next_token(std::unique_ptr<std::ifstream> ifs);
+        static token_ptr get_next_token(std::unique_ptr<std::ifstream> &ifs);
     };
 }

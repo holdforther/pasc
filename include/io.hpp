@@ -5,13 +5,10 @@
 
 namespace pasc
 {
-    typedef std::unique_ptr<std::filebuf> filebuf_ptr;
     typedef std::unique_ptr<std::ifstream> ifstream_ptr;
 
     class IO
     {
-    private:
-        filebuf_ptr fbuf;
     public:
         std::string fname;
         ifstream_ptr ifs;

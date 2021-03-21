@@ -1,11 +1,10 @@
 #include "clexer.hpp"
-#include <memory>
 
-std::unique_ptr<CToken> pasc::CLexer::get_next_token(std::ifstream &ifs)
+pasc::token_ptr pasc::CLexer::get_next_token(std::unique_ptr<std::ifstream> &ifs)
 {
     char ch;
     ETokenType ett;
-    if (!ifs.get(ch))
+    if (!ifs->get(ch))
     {
         return nullptr;
     }
@@ -14,11 +13,11 @@ std::unique_ptr<CToken> pasc::CLexer::get_next_token(std::ifstream &ifs)
     if(std::isdigit(ch))
     {
         ett = ettValue;
-        while (ifs.get(ch) && std::isdigit(ch))
+        while (ifs->get(ch) && std::isdigit(ch))
         {
             ss << ch;
         }
-        return std::make_unique<CToken>(ett); 
+        return std::make_unique<CToken>(ett);
     }
     else switch (ch)
     {

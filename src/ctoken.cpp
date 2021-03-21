@@ -1,15 +1,17 @@
 #include "ctoken.hpp"
 
-CToken::CToken(const ETokenType &type)
+pasc::CToken::CToken(const ETokenType &type)
 {
     this->type = type;
 }
-CToken::CToken(const EOperator &oper)
+
+pasc::CToken::CToken(const EOperator &oper)
 {
     this->oper = oper;
     type = ettOperator;
 }
-std::string CToken::to_string()
+
+std::string pasc::CToken::to_string()
 {
     switch (ettValue)
     {
@@ -21,5 +23,5 @@ std::string CToken::to_string()
         return "Value";
     default:
         return "Null";
-    }
+  }
 }

@@ -1,32 +1,38 @@
 #pragma once
+#include <memory>
+
 #include "cvariant.hpp"
 
-enum ETokenType
+namespace pasc
 {
-    ettOperator,
-    ettIdentifier,
-    ettValue,
-};
+    enum ETokenType
+    {
+        ettOperator,
+        ettIdentifier,
+        ettValue,
+    };
 
-enum EOperator
-{
-    eoLeftBracet,
-    eoRightBracet,
-    eoPlus,
-    eoMinus,
-    eoMul,
-    eoDiv
-};
+    enum EOperator
+    {
+        eoLeftBracet,
+        eoRightBracet,
+        eoPlus,
+        eoMinus,
+        eoMul,
+        eoDiv
+    };
 
-class CToken
-{
-private:
-    ETokenType type;
-    EOperator oper;
-    pasc::CVariant* value;
-    std::string identifier;
-public:
-    CToken(const ETokenType &type);
-    CToken(const EOperator &oper);
-    std::string to_string();
-};
+    class CToken
+    {
+    private:
+        ETokenType type;
+        EOperator oper;
+        std::unique_ptr<CToken> value;
+        std::string identifier;
+    public:
+        CToken(const ETokenType &type);
+        CToken(const EOperator &oper);
+        std::string to_string();
+    };
+    typedef std::unique_ptr<CToken> token_ptr;
+} // namespace pasc
