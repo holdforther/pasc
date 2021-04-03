@@ -14,5 +14,8 @@ namespace pasc
         ifstream_ptr ifs;
         IO(const std::string &input_file_name);
         std::string get_program_text();
+        std::string get_lexeme();
     };
+    typedef std::unique_ptr<IO> io_ptr;
 }
+// Пропускаем комментарии и сплитим по спецсимволам

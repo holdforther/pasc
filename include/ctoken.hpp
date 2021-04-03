@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+#include <string>
+#include <unordered_map>
 
 #include "cvariant.hpp"
 
@@ -27,11 +29,12 @@ namespace pasc
     private:
         ETokenType type;
         EOperator oper;
-        std::unique_ptr<CToken> value;
+        variant_ptr value;
         std::string identifier;
     public:
-        CToken(const ETokenType &type);
-        CToken(const EOperator &oper);
+        CToken(ETokenType type);
+        CToken(EOperator oper);
+        CToken(const std::string &identifier);
         std::string to_string();
     };
     typedef std::unique_ptr<CToken> token_ptr;

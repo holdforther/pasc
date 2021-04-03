@@ -1,39 +1,60 @@
+#include <cstdio>
+#include <locale>
+#include <memory>
+#include <string>
+#include <unordered_map>
+
 #include "clexer.hpp"
 
-pasc::token_ptr pasc::CLexer::get_next_token(std::unique_ptr<std::ifstream> &ifs)
+std::unordered_map<std::string, pasc::EOperator> operators
 {
-    char ch;
-    ETokenType ett;
-    if (!ifs->get(ch))
+    {"(", pasc::eoLeftBracet},
+    {"/", pasc::eoDiv},
+    {"-", pasc::eoMinus},
+    {"*", pasc::eoMul},
+    {"+", pasc::eoPlus},
+    {")", pasc::eoRightBracet}
+};
+
+pasc::token_ptr pasc::CLexer::get_next_token(pasc::io_ptr &io)
+{
+    char cur_char, next_char;
+    token_ptr token = nullptr;
+    ETokenType ett = ettValue;
+    std::stringstream ss;
+
+    while (io->ifs->get(cur_char))
     {
-        return nullptr;
+        next_char = io->ifs->peek();
+        if (std::isdigit(cur_char)) // Values
+        {
+            ett = ettValue;
+        }
+        else if (std::isalpha(cur_char)) // Identifiers
+        {
+            ett = ettIdentifier;
+        }
+        else // Operators
+        {
+            ett = ettOperator;
+        }
+        while (!std::isspace(next_char) && next_char != ';')
+        {
+            ss << cur_char;
+            io->ifs->get(cur_char);
+            next_char = io->ifs->peek();
+        }
     }
 
-    std::stringstream ss;
-    if(std::isdigit(ch))
-    {
-        ett = ettValue;
-        while (ifs->get(ch) && std::isdigit(ch))
-        {
-            ss << ch;
-        }
-        return std::make_unique<CToken>(ett);
+    switch (ett) {
+    case ettValue:
+        token = std::make_unique<CToken>(ett);
+        break;
+    case ettIdentifier:
+        token = std::make_unique<CToken>(ss.str());
+        break;
+    case ettOperator:
+        token = std::make_unique<CToken>(operators[ss.str()]);
     }
-    else switch (ch)
-    {
-    case '(':
-        return std::make_unique<CToken>(eoLeftBracet);
-    case ')':
-        return std::make_unique<CToken>(eoRightBracet);
-    case '+':
-        return std::make_unique<CToken>(eoPlus);
-    case '-':
-        return std::make_unique<CToken>(eoMinus);
-    case '*':
-        return std::make_unique<CToken>(eoMul);
-    case '/':
-        return std::make_unique<CToken>(eoDiv);
-    default:
-        return std::make_unique<CToken>(ettIdentifier);
-    }
+    return token;
 }

@@ -1,27 +1,50 @@
 #include "ctoken.hpp"
+#include <string>
 
-pasc::CToken::CToken(const ETokenType &type)
+pasc::CToken::CToken(pasc::variant_ptr value)
 {
-    this->type = type;
+    this->type = ettValue;
+    // std::move()
 }
 
-pasc::CToken::CToken(const EOperator &oper)
+pasc::CToken::CToken(const std::string &identifier)
+{
+    this->type = ettIdentifier;
+    this->identifier = identifier;
+}
+
+pasc::CToken::CToken(EOperator oper)
 {
     this->oper = oper;
     type = ettOperator;
 }
 
+std::unordered_map<int, std::string> operator_repr
+{
+    {pasc::eoLeftBracet, "("},
+    {pasc::eoDiv, "/"},
+    {pasc::eoMinus, "-"},
+    {pasc::eoMul, "*"},
+    {pasc::eoPlus, "+"},
+    {pasc::eoRightBracet, ")"}
+};
+
 std::string pasc::CToken::to_string()
 {
-    switch (ettValue)
+    std::string token_type, token_repr;
+    switch (type)
     {
     case 0:
-        return "Operator";
+        token_type = "Operator ";
+        token_repr = operator_repr[oper];
+        break;
     case 1:
-        return "Identifier";
-    case 2:
-        return "Value";
+        token_type = "Identifier ";
+        token_repr = identifier;
+        break;
     default:
-        return "Null";
-  }
+        token_type = "Value ";
+        break;
+    }
+    return token_type.append(token_repr);
 }

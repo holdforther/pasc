@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "ctoken.hpp"
+#include "io.hpp"
 
 namespace pasc
 {
@@ -12,6 +13,10 @@ namespace pasc
     {
     public:
         std::string Expr;
-        static token_ptr get_next_token(std::unique_ptr<std::ifstream> &ifs);
+        io_ptr io;
+        static token_ptr get_next_token();
     };
 }
+
+/*
+*/

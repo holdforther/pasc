@@ -17,3 +17,10 @@ std::string pasc::IO::get_program_text()
     delete[] buffer;
     return text;
 }
+
+std::string pasc::IO::get_lexeme()
+{
+    std::string lexeme;
+    (*ifs) >> lexeme;
+    return lexeme;
+}
