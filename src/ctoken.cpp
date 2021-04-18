@@ -1,90 +1,96 @@
-#include "ctoken.hpp"
 #include <memory>
 #include <string>
 
-pasc::CToken::CToken(pasc::variant_ptr value)
-{
-    this->type = ett_value;
-    this->value = std::move(value);
-}
+#include "ctoken.hpp"
 
-pasc::CToken::CToken(const std::string &identifier)
-{
-    this->type = ett_identifier;
-    this->identifier = identifier;
-}
+namespace pasc {
+    CToken::CToken() {
+        id = "";
+        val = nullptr;
+    }
+    CToken::CToken(variant_ptr value) {
+        if (val) {
+            type = ett_value;
+            id = value->to_string(); 
+            val = std::move(value);
+        }
+    }
+    CToken::CToken(const std::string &identifier) {
+        type = ett_identifier;
+        id = identifier;
+    }
+    
 
-pasc::CToken::CToken(pasc::token_operator oper)
-{
-    this->oper = oper;
-    type = ett_operator;
-}
+    CToken::CToken(token_operator _operator) {
+        type = ett_operator;
+        op = _operator;
+        id = std::to_string(_operator);
+    }   
 
-static std::unordered_map<pasc::token_operator, std::string> operator_repr
-{
-    {pasc::eto_and, "AND"},
-    {pasc::eto_array, "ARRAY"},
-    {pasc::eto_assignment, ":="},
-    {pasc::eto_asterisk, "*"},
-    {pasc::eto_begin, "BEGIN"},
-    {pasc::eto_case, "CASE"},
-    {pasc::eto_colon, ":"},
-    {pasc::eto_comma, ","},
-    {pasc::eto_const, "CONST"},
-    {pasc::eto_div, "DIV"},
-    {pasc::eto_do, "DO"},
-    {pasc::eto_double_period, ".."},
-    {pasc::eto_downto, "DOWNTO"},
-    {pasc::eto_else, "ELSE"},
-    {pasc::eto_end, "END"},
-    {pasc::eto_equal, "="},
-    {pasc::eto_file, "FILE"},
-    {pasc::eto_for, "FOR"},
-    {pasc::eto_function, "FUNCTION"},
-    {pasc::eto_goto, "GOTO"},
-    {pasc::eto_greater_equal, ">="},
-    {pasc::eto_greater_than, ">"},
-    {pasc::eto_if, "IF"},
-    {pasc::eto_in, "IN"},
-    {pasc::eto_label, "LABEL"},
-    {pasc::eto_left_bracket, "["},
-    {pasc::eto_left_curly_bracket, "{"},
-    {pasc::eto_left_multicomment, "(*"},
-    {pasc::eto_left_parenthesis, "("},
-    {pasc::eto_less_equal, "<="},
-    {pasc::eto_less_than, "<"},
-    {pasc::eto_minus, "-"},
-    {pasc::eto_mod, "%"},
-    {pasc::eto_nil, "NIL"},
-    {pasc::eto_not, "NOT"},
-    {pasc::eto_not_equal, "<>"},
-    {pasc::eto_of, "OF"},
-    {pasc::eto_or, "OR"},
-    {pasc::eto_packed, "PACKED"},
-    {pasc::eto_period, "."},
-    {pasc::eto_plus, "+"},
-    {pasc::eto_pointer, "^"},
-    {pasc::eto_procedure, "PROCEDURE"},
-    {pasc::eto_program, "PROGRAM"},
-    {pasc::eto_record, "RECORD"},
-    {pasc::eto_repeat, "REPEAT"},
-    {pasc::eto_right_bracket, "]"},
-    {pasc::eto_right_curly_bracket, "}"},
-    {pasc::eto_right_multicomment, "*)"},
-    {pasc::eto_right_parenthesis, ")"},
-    {pasc::eto_semicolon, ";"},
-    {pasc::eto_set, "SET"},
-    {pasc::eto_slash, "/"},
-    {pasc::eto_then, "THEN"},
-    {pasc::eto_to, "TO"},
-    {pasc::eto_type, "TYPE"},
-    {pasc::eto_until, "UNTIL"},
-    {pasc::eto_var, "VAR"},
-    {pasc::eto_while, "WHILE"},
-    {pasc::eto_with, "WITH"}
-};
+    static std::unordered_map<token_operator, std::string> op_repr {
+        {eto_and, "AND"},
+        {eto_array, "ARRAY"},
+        {eto_assignment, ":="},
+        {eto_asterisk, "*"},
+        {eto_begin, "BEGIN"},
+        {eto_case, "CASE"},
+        {eto_colon, ":"},
+        {eto_comma, ","},
+        {eto_const, "CONST"},
+        {eto_div, "DIV"},
+        {eto_do, "DO"},
+        {eto_double_period, ".."},
+        {eto_downto, "DOWNTO"},
+        {eto_else, "ELSE"},
+        {eto_end, "END"},
+        {eto_equal, "="},
+        {eto_file, "FILE"},
+        {eto_for, "FOR"},
+        {eto_function, "FUNCTION"},
+        {eto_goto, "GOTO"},
+        {eto_greater_equal, ">="},
+        {eto_greater_than, ">"},
+        {eto_if, "IF"},
+        {eto_in, "IN"},
+        {eto_label, "LABEL"},
+        {eto_left_bracket, "["},
+        {eto_left_curly_bracket, "{"},
+        {eto_left_multicomment, "(*"},
+        {eto_left_parenthesis, "("},
+        {eto_less_equal, "<="},
+        {eto_less_than, "<"},
+        {eto_minus, "-"},
+        {eto_mod, "%"},
+        {eto_nil, "NIL"},
+        {eto_not, "NOT"},
+        {eto_not_equal, "<>"},
+        {eto_of, "OF"},
+        {eto_or, "OR"},
+        {eto_packed, "PACKED"},
+        {eto_period, "."},
+        {eto_plus, "+"},
+        {eto_pointer, "^"},
+        {eto_procedure, "PROCEDURE"},
+        {eto_program, "PROGRAM"},
+        {eto_record, "RECORD"},
+        {eto_repeat, "REPEAT"},
+        {eto_right_bracket, "]"},
+        {eto_right_curly_bracket, "}"},
+        {eto_right_multicomment, "*)"},
+        {eto_right_parenthesis, ")"},
+        {eto_semicolon, ";"},
+        {eto_set, "SET"},
+        {eto_slash, "/"},
+        {eto_then, "THEN"},
+        {eto_to, "TO"},
+        {eto_type, "TYPE"},
+        {eto_until, "UNTIL"},
+        {eto_var, "VAR"},
+        {eto_while, "WHILE"},
+        {eto_with, "WITH"}
+    };
 
-std::string pasc::CToken::to_string()
-{
-    return operator_repr[this->oper];
+    std::string CToken::to_string() const {
+        return op_repr.at(op);
+    }
 }

@@ -5,19 +5,15 @@
 
 #include "cvariant.hpp"
 
-namespace pasc
-{
+namespace pasc {
     // https://www.pascal-central.com/ppl/chapter3.html
-
-    enum token_type
-    {
+    enum token_type {
         ett_operator,
         ett_identifier,
         ett_value,
     };
 
-    enum token_operator
-    {
+    enum token_operator {
         eto_undefined = -1, // Undefined
         // Assignment
         eto_assignment,             // :=
@@ -89,20 +85,16 @@ namespace pasc
 
     class CToken
     {
-    private:
-        token_type type;
-        token_operator oper;
-        variant_ptr value;
-        std::string identifier;
     public:
-        CToken(token_operator oper);
+        token_type type;
+        token_operator op;
+        variant_ptr val;
+        std::string id;
+        CToken();
+        CToken(token_operator _operator);
         CToken(const std::string &identifier);
         CToken(variant_ptr value);
-        token_type get_type() const {return this->type;}
-        token_operator get_operator() const {return this->oper;}
-        std::string to_string();
-        unsigned nline;
-        unsigned ncol;
+        std::string to_string() const;
     };
     typedef std::unique_ptr<CToken> token_ptr;
 } // namespace pasc
