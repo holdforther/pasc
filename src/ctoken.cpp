@@ -86,19 +86,5 @@ static std::unordered_map<pasc::token_operator, std::string> operator_repr
 
 std::string pasc::CToken::to_string()
 {
-    std::string repr;
-    switch (type)
-    {
-    case ett_operator:
-        repr = "Operator ";
-        repr += operator_repr[oper];
-        break;
-    case ett_identifier:
-        repr = "Identifier ";
-        break;
-    default: // ett_value
-        repr = "Value ";
-        break;
-    }
-    return repr;
+    return operator_repr[this->oper];
 }
