@@ -11,12 +11,9 @@ namespace pasc
 {
     class CLexer
     {
-    public:
-        std::string Expr;
         io_ptr io;
-        static token_ptr get_next_token();
+    public:
+        CLexer(io_ptr io);
+        token_ptr get_next_token();
     };
 }
-
-/*
-*/

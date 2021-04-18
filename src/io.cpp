@@ -6,21 +6,21 @@ pasc::IO::IO(const std::string &input_file_name)
     ifs = std::make_unique<std::ifstream>(input_file_name, std::ios::in);
 }
 
-std::string pasc::IO::get_program_text()
+char pasc::IO::get_char()
 {
-    ifs->seekg(0, ifs->end);
-    int length = ifs->tellg();
-    ifs->seekg(0, ifs->beg);
-    char *buffer = new char [length];
-    ifs->read(buffer, length);
-    std::string text(buffer);
-    delete[] buffer;
-    return text;
+    char ch = ' ';
+    ifs->get(ch);
+    if (ch == '\n')
+    {
+        caret.nline++;
+        caret.ncol = 1;
+    }
+    else
+        caret.ncol++;
+    return ch;
 }
 
-std::string pasc::IO::get_lexeme()
+char pasc::IO::peek_char()
 {
-    std::string lexeme;
-    (*ifs) >> lexeme;
-    return lexeme;
+    return ifs->peek();
 }

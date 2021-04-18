@@ -1,12 +1,24 @@
 #pragma once
 #include <string>
+#include <vector>
 
 namespace pasc
 {
-    class CError
-    {    
-    public:
-        std::string msg;
-        CError(const std::string &err_msg);
+    struct caret_position
+    {
+        unsigned nline;
+        unsigned ncol;  
+    };
+    
+    enum error_type
+    {
+        no_errors
+    };
+
+    struct ErrorList
+    {
+        std::vector<int> codes;
+        std::vector<size_t> rows;
+        std::vector<size_t> cols;
     };
 }
