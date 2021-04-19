@@ -1,6 +1,3 @@
-#include <memory>
-#include <string>
-
 #include "ctoken.hpp"
 
 namespace pasc {
@@ -8,12 +5,10 @@ namespace pasc {
         id = "";
         val = nullptr;
     }
-    CToken::CToken(variant_ptr value) {
-        if (val) {
-            type = ett_value;
-            id = value->to_string(); 
-            val = std::move(value);
-        }
+    CToken::CToken(variant_ptr &value) {
+        type = ett_value;
+        id = value->to_string(); 
+        val = std::move(value);
     }
     CToken::CToken(const std::string &identifier) {
         type = ett_identifier;
@@ -91,6 +86,17 @@ namespace pasc {
     };
 
     std::string CToken::to_string() const {
-        return op_repr.at(op);
+        switch (type) {
+        case ett_operator: {
+            std::string oper_repr = op_repr.find(op) != op_repr.end() ? op_repr[op] : "UNKNOWN"; 
+            return "Operator " + oper_repr;
+        }
+        case ett_value: {
+            return "Value " + val->to_string();
+        }
+        default: {
+            return "Identifier " + id;
+        }
+        }
     }
 }
