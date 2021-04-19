@@ -13,24 +13,24 @@ namespace pasc {
     class CVariant {
     private:
         var_type T;
-    protected:
-        CVariant(const var_type T);
     public:
+        CVariant(const var_type T);
+        virtual ~CVariant() {}
         var_type get_type();
-        virtual std::string to_string() = 0;
+        virtual std::string to_string() {return "";}
     };
 
     class CIntVariant : public CVariant {
     public:
-        int val;
-        CIntVariant(const int val);
+        long int val;
+        CIntVariant(const long int val);
         virtual std::string to_string() override;
     };
 
     class CRealVariant : public CVariant {
     public:
-        float val;
-        CRealVariant(const float val);
+        long double val;
+        CRealVariant(const long double val);
         virtual std::string to_string() override;
     };
 
