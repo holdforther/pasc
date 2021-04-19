@@ -1,7 +1,9 @@
+#include <cstdio>
 #include <iostream>
 #include <memory>
 
 #include "clexer.hpp"
+#include "ctoken.hpp"
 #include "io.hpp"
 
 using namespace pasc;
@@ -14,13 +16,13 @@ int main(int argc, char **args)
         return(-1);
     }
     auto io = std::make_unique<IO>(args[1]);
-    auto lexeme = io->get_lexeme();
-    std::cout << lexeme << std::endl;
-    auto token = CLexer::get_next_token(io);
+    auto lexer = std::make_unique<CLexer>(io);
+    token_ptr token = lexer->get_next_token();
     while(token)
     {
         std::cout << token->to_string() << std::endl;
-        token = CLexer::get_next_token(io);
+        token = lexer->get_next_token();
+        std::getchar();
     }
     return(0);
 }
