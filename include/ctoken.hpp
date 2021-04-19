@@ -14,7 +14,7 @@ namespace pasc {
     };
 
     enum token_operator {
-        eto_undefined = -1, // Undefined
+        eto_undefined, // Undefined
         // Assignment
         eto_assignment,             // :=
         // Relational
@@ -93,7 +93,7 @@ namespace pasc {
         CToken();
         CToken(token_operator _operator);
         CToken(const std::string &identifier);
-        CToken(variant_ptr value);
+        CToken(variant_ptr &value);
         std::string to_string() const;
     };
     typedef std::unique_ptr<CToken> token_ptr;
