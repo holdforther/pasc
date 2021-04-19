@@ -7,21 +7,19 @@
 
 namespace pasc
 {
-    typedef std::unique_ptr<std::ifstream> ifstream_ptr;
-
     class IO
     {
     private:
-        std::string fname;
-        ifstream_ptr ifs;
-        caret_position caret;
+        std::ifstream ifs;
+        std::string line_buf;
+        size_t row_index;
+        size_t column_index;
     public:
         IO(const std::string &input_file_name);
-        ifstream_ptr get_ifs();
         char get_char();
         char peek_char();
-        caret_position get_pos() const {return this->caret;}
+        size_t get_row_index() const;
+        size_t get_col_index() const;
     };
     typedef std::unique_ptr<IO> io_ptr;
-}
-// Пропускаем комментарии и сплитим по спецсимволам
+} // namespace pasc
