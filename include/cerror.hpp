@@ -8,12 +8,13 @@ namespace pasc
     enum error_code {
         eec_no,
         // Lexical errors
-        eec_too_many_symbols,
+        eec_out_of_range,
         // Syntactic errors
         eec_exp_program,
         eec_exp_begin,
         eec_exp_end,
         eec_exp_identifier,
+        eec_exp_constant,
         eec_exp_period,
         eec_exp_comma,
         eec_exp_colon,
@@ -27,9 +28,6 @@ namespace pasc
         eec_exp_equal,
         eec_exp_record,
         eec_exp_until,
-        eec_exp_multiplier,
-        eec_exp_direction,
-        eec_exp_const,
         eec_invalid_operator,
         eec_invalid_type,
         eec_unknown

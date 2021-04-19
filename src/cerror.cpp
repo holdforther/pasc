@@ -3,7 +3,7 @@
 
 namespace pasc {
     std::unordered_map<error_code, std::string> code_repr {
-        {eec_too_many_symbols, "too many symbols for a variable"},
+        {eec_out_of_range, "too many symbols for an identifier"},
         {eec_exp_program, "expected \'PROGRAM\'"},
         {eec_exp_begin, "expected \'BEGIN\'"},
         {eec_exp_end, "expected \'END\'"},
@@ -21,7 +21,6 @@ namespace pasc {
         {eec_exp_equal, "expected \'EQUAL\'"},
         {eec_exp_record, "expected \'RECORD\'"},
         {eec_exp_until, "expected \'UNTIL\'"},
-        {eec_exp_multiplier, "expected constant, identifier or \'(\'"},
         {eec_invalid_operator, "invalid operator"},
         {eec_unknown, "unknown error"}
     };
