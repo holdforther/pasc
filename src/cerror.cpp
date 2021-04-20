@@ -26,6 +26,6 @@ namespace pasc {
     };
 
     std::string CError::to_string() const{
-        return code_repr.at(code);
+        return code_repr.find(code) != code_repr.end() ? code_repr[code] : "UNKNOWN";
     }
 }
