@@ -1,5 +1,4 @@
 #include "io.hpp"
-#include <string>
 
 namespace pasc {
     IO::IO(const std::string &input_file_name) : ifs(input_file_name, std::ios::in) {
@@ -43,5 +42,9 @@ namespace pasc {
 
     size_t IO::get_row_index() const {
         return row_index;
+    }
+
+    bool IO::is_eof() {
+        return ifs.eof();
     }
 }

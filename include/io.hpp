@@ -3,8 +3,6 @@
 #include <memory>
 #include <string>
 
-#include <cerror.hpp>
-
 namespace pasc
 {
     class IO
@@ -20,6 +18,7 @@ namespace pasc
         char peek_char();
         size_t get_row_index() const;
         size_t get_col_index() const;
+        bool is_eof();
     };
     typedef std::unique_ptr<IO> io_ptr;
 } // namespace pasc
