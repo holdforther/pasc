@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <vector>
 
 #include "ctoken.hpp"
@@ -11,25 +12,19 @@ namespace pasc
         eec_out_of_range,
         // Syntactic errors
         eec_exp_program,
-        eec_exp_begin,
-        eec_exp_end,
         eec_exp_identifier,
-        eec_exp_constant,
-        eec_exp_period,
-        eec_exp_comma,
-        eec_exp_colon,
         eec_exp_semicolon,
-        eec_exp_double_period,
-        eec_exp_assignment,
+        eec_exp_value,
+        eec_exp_end,
+        eec_exp_period,
+        eec_exp_colon,
+        eec_exp_comma,
         eec_exp_left_parenthesis,
         eec_exp_right_parenthesis,
-        eec_exp_then,
-        eec_exp_do,
-        eec_exp_equal,
-        eec_exp_record,
-        eec_exp_until,
+        eec_exp_assignment,
+        eec_exp_procedure,
         eec_invalid_operator,
-        eec_invalid_type,
+        eec_exp_begin,
         eec_unknown
     };
 
