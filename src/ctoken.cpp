@@ -1,26 +1,42 @@
+#include <unordered_map>
+
 #include "ctoken.hpp"
 
 namespace pasc {
-    CToken::CToken() {
-        id = "";
-        val = nullptr;
-    }
-    CToken::CToken(variant_ptr &value) {
+    CToken::CToken(size_t row_pos, size_t column_pos)
+        : row_pos(row_pos), column_pos(column_pos), op(eto_undefined), val(nullptr),  id(""){}
+
+    CToken::CToken(size_t row_pos, size_t column_pos, variant_ptr &value)
+        : row_pos(row_pos), column_pos(column_pos) {
         type = ett_value;
-        id = value->to_string(); 
+        id = value->to_string();
         val = std::move(value);
+        op = eto_undefined;
     }
-    CToken::CToken(const std::string &identifier) {
+
+    CToken::CToken(size_t row_pos, size_t column_pos, const std::string &identifier)
+        : row_pos(row_pos), column_pos(column_pos) {
         type = ett_identifier;
         id = identifier;
+        op = eto_undefined;
+        val = nullptr;
     }
-    
 
-    CToken::CToken(token_operator _operator) {
+    CToken::CToken(size_t row_pos, size_t column_pos, token_operator _operator)
+        : row_pos(row_pos), column_pos(column_pos) {
         type = ett_operator;
         op = _operator;
         id = std::to_string(_operator);
-    }   
+        val = nullptr;
+    }
+
+    size_t CToken::get_col_pos() const {
+        return column_pos;
+    }
+
+    size_t CToken::get_row_pos() const {
+        return row_pos;
+    }
 
     static std::unordered_map<token_operator, std::string> op_repr {
         {eto_and, "AND"},
@@ -88,7 +104,7 @@ namespace pasc {
     std::string CToken::to_string() const {
         switch (type) {
         case ett_operator: {
-            std::string oper_repr = op_repr.find(op) != op_repr.end() ? op_repr[op] : "UNKNOWN"; 
+            std::string oper_repr = op_repr.find(op) != op_repr.end() ? op_repr[op] : "UNKNOWN";
             return "Operator " + oper_repr;
         }
         case ett_value: {

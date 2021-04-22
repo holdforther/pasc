@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <unordered_map>
 
 #include "cvariant.hpp"
 
@@ -85,16 +84,21 @@ namespace pasc {
 
     class CToken
     {
+    private:
+        size_t row_pos;
+        size_t column_pos;
     public:
         token_type type;
         token_operator op;
         variant_ptr val;
         std::string id;
-        CToken();
-        CToken(token_operator _operator);
-        CToken(const std::string &identifier);
-        CToken(variant_ptr &value);
+        CToken(size_t row_pos, size_t column_pos);
+        CToken(size_t row_pos, size_t column_pos, token_operator _operator);
+        CToken(size_t row_pos, size_t column_pos, const std::string &identifier);
+        CToken(size_t row_pos, size_t column_pos, variant_ptr &value);
         std::string to_string() const;
+        size_t get_row_pos() const;
+        size_t get_col_pos() const;
     };
     typedef std::unique_ptr<CToken> token_ptr;
 } // namespace pasc
