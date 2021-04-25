@@ -15,6 +15,7 @@ namespace pasc
         eec_exp_identifier,
         eec_exp_semicolon,
         eec_exp_value,
+        eec_exp_begin,
         eec_exp_end,
         eec_exp_period,
         eec_exp_colon,
@@ -23,8 +24,13 @@ namespace pasc
         eec_exp_right_parenthesis,
         eec_exp_assignment,
         eec_exp_procedure,
+        eec_exp_while,
+        eec_exp_do,
         eec_invalid_operator,
-        eec_exp_begin,
+        eec_invalid_symbol,
+        eec_invalid_type,
+        eec_incompatible_types,
+        eec_unknown_identifier,
         eec_unknown
     };
 
