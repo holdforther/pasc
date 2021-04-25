@@ -16,7 +16,7 @@ namespace pasc {
     public:
         CVariant(const var_type T);
         virtual ~CVariant() {}
-        var_type get_type();
+        var_type get_type() const;
         virtual std::string to_string() {return "";}
     };
 

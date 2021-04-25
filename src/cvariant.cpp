@@ -26,4 +26,8 @@ namespace pasc {
     std::string CStringVariant::to_string() {
         return val;
     }
+
+    var_type CVariant::get_type() const {
+        return T;
+    }
 }
