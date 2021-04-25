@@ -1,4 +1,5 @@
 #include "io.hpp"
+#include "cerror.hpp"
 
 namespace pasc {
     IO::IO(const std::string &input_file_name) : ifs(input_file_name, std::ios::in) {
@@ -46,5 +47,19 @@ namespace pasc {
 
     bool IO::is_eof() {
         return ifs.eof();
+    }
+
+    void IO::add_error(const CError &error) {
+        if (error.code != eec_no) {
+            errors.emplace_back(error);
+        }
+    }
+
+    size_t IO::get_errors_size() const {
+        return errors.size();
+    }
+
+    ErrorList IO::get_errors() const {
+        return errors;
     }
 }
