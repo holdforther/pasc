@@ -3,12 +3,13 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "cerror.hpp"
 #include "clexer.hpp"
 #include "io.hpp"
 
 namespace pasc {
-    CLexer::CLexer(io_ptr &io) {
-        this->io = std::move(io);
+    CLexer::CLexer(const io_ptr &io) {
+        this->io = io;
         key_words = std::unordered_map<std::string, token_operator>{
             {"AND", pasc::eto_and},
             {"ARRAY", pasc::eto_array},
@@ -71,6 +72,7 @@ namespace pasc {
             {"WHILE", pasc::eto_while},
             {"WITH", pasc::eto_with}
         };
+        skip_spaces();
     }
     size_t CLexer::get_token_row() const {
         return token_row_pos;
@@ -93,7 +95,7 @@ namespace pasc {
         }
     }
 
-    token_ptr CLexer::get_next_token(CError &error) {
+    token_ptr CLexer::get_next_token() {
         enum scan_state {
             ss_start,
             ss_int,
@@ -108,7 +110,6 @@ namespace pasc {
         size_t col_start = io->get_col_index();
         scan_state state = ss_start;
         lexeme_type ltype = lt_unknown;
-        skip_spaces();
         while (state != ss_end) {
             char symbol = io->get_char();
             char next = io->peek_char();
@@ -190,18 +191,17 @@ namespace pasc {
             }
         }
         skip_spaces();
-        auto token = get_parsed_token(row_start, col_start, ltype, lexeme_stream.str(), error);
-        if (error.code != eec_no) {
-            error.col = row_start;
-            error.row = col_start;
-        }
-        return token;
+        return get_parsed_token(row_start, col_start, ltype, lexeme_stream.str());
     }
 
-    token_ptr CLexer::get_parsed_token(size_t row_start, size_t col_start, lexeme_type ltype, const std::string &lexeme, CError &error) {
+    token_ptr CLexer::get_parsed_token(size_t row_start, size_t col_start, lexeme_type ltype, const std::string &lexeme) {
         token_ptr token = nullptr;
         variant_ptr variant;
+        CError error(row_start, col_start);
         switch (ltype) {
+        // case lt_unknown: {
+        //     error.code = eec_invalid_symbol;
+        // } break;
         case lt_identifier: {
             std::string lexeme_copy(lexeme);
             for (auto & c: lexeme_copy) c = toupper(c);
@@ -219,14 +219,10 @@ namespace pasc {
             }
             catch (const std::invalid_argument& ia) {
                 error.code = eec_out_of_range;
-                error.row = row_start;
-                error.col = col_start;
                 break;
             }
             catch (const std::out_of_range& oor) {
                 error.code = eec_out_of_range;
-                error.row = row_start;
-                error.col = col_start;
                 break;
             }
             variant = std::make_unique<CIntVariant>(value);
@@ -260,6 +256,7 @@ namespace pasc {
         } break;
         default: break;
         }
+        io->add_error(error);
         return token;
     }
 } // namespace pasc
