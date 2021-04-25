@@ -1,28 +1,23 @@
-#include <cstdio>
 #include <iostream>
 #include <memory>
+#include <ostream>
 
-#include "clexer.hpp"
-#include "ctoken.hpp"
+#include "ccompiler.hpp"
 #include "io.hpp"
 
-using namespace pasc;
-
+const char* path = "../FormalGrammars/pasc/hello.pas";
 int main(int argc, char **args)
 {
-    if (argc != 2)
-    {
-        std::cout << "Provide single Pascal source file\n";
-        return(-1);
+    using namespace pasc;
+    if (argc == 2) {
+        path = args[1];
     }
-    auto io = std::make_unique<IO>(args[1]);
-    auto lexer = std::make_unique<CLexer>(io);
-    token_ptr token = lexer->get_next_token();
-    while(token)
-    {
-        std::cout << token->to_string() << std::endl;
-        token = lexer->get_next_token();
-        std::getchar();
+    auto io = std::make_shared<IO>(path);
+    auto compiler = std::make_unique<Compiler>(io);
+    compiler->compile();
+    std::cout << "Compilation finished. Found errors: " << io->get_errors_size() << std::endl;
+    for (auto error : io->get_errors()) {
+        std::cout << error.to_string() << std::endl;
     }
     return(0);
 }
